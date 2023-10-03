@@ -1,24 +1,13 @@
-const checkLength = function (string, length){
-  if (string.length<=length){
-    return true;
-  }
+const checkStringLength = (string, lengthString) => string.length <= lengthString;
 
-  return false;
-};
-
-const isPalindrom = function (string){
+const isPalindrom = (string) => {
   let stringByContrast = '';
-  for (let i=(string.length-1); i>=0; i--){
+  for (let i = (string.length - 1); i >= 0; i--){
     stringByContrast += string[i];
   }
 
-  if (string === stringByContrast){
-
-    return true;
-  }
-
-  return false;
+  return string === stringByContrast;
 };
 
-checkLength('кот', 4);
+checkStringLength('кот', 4);
 isPalindrom('кот');
