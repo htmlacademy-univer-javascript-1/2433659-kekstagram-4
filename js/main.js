@@ -24,22 +24,22 @@ const NAMES = [
   'Алёна',
 ];
 
-const avatarId = {
+const AvatarId = {
   MIN: 1,
   MAX: 6,
 };
 
-const messagesCount = {
+const MessagesCount = {
   MIN: 1,
   MAX: 2,
 };
 
-const commentsCount = {
+const CommentsCount = {
   MIN: 0,
   MAX: 30,
 };
 
-const likesCount = {
+const LikesCount = {
   MIN: 15,
   MAX: 200,
 };
@@ -56,8 +56,8 @@ const getRandomInteger = (a, b) => {
 
 const getComment = (_, id) => ({
   id,
-  avatar: `img/avatar-${getRandomInteger(avatarId.MIN, avatarId.MAX)}.svg`,
-  message: MESSAGES.slice(0, getRandomInteger(messagesCount.MIN, messagesCount.MAX)),
+  avatar: `img/avatar-${getRandomInteger(AvatarId.MIN, AvatarId.MAX)}.svg`,
+  message: MESSAGES.slice(0, getRandomInteger(MessagesCount.MIN, MessagesCount.MAX)),
   name: NAMES[getRandomInteger(0, NAMES.length - 1)],
 });
 
@@ -65,8 +65,8 @@ const getPhotoData = (_, id)=> ({
   id,
   url: `photos/${id}.jpg`,
   description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
-  likes: getRandomInteger(likesCount.MIN, likesCount.MAX),
-  comments: Array.from({length: getRandomInteger(commentsCount.MIN, commentsCount.MAX)}, (getComment)),
+  likes: getRandomInteger(LikesCount.MIN, LikesCount.MAX),
+  comments: Array.from({length: getRandomInteger(CommentsCount.MIN, CommentsCount.MAX)}, (getComment)),
 });
 
 const getPhotos = () => Array.from({length: MAX_COUNT_PHOTOS}, getPhotoData);
