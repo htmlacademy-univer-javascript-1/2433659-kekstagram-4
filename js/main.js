@@ -1,5 +1,4 @@
-
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Море',
   'Котик на солнце',
   'Как хорошо в лесу летом',
@@ -25,7 +24,27 @@ const NAMES = [
   'Алёна',
 ];
 
-const PHOTOS_COUNT = 25;
+const avatarId = {
+  MIN: 1,
+  MAX: 6,
+};
+
+const messagesCount = {
+  MIN: 1,
+  MAX: 2,
+};
+
+const commentsCount = {
+  MIN: 0,
+  MAX: 30,
+};
+
+const likesCount = {
+  MIN: 15,
+  MAX: 200,
+};
+
+const MAX_COUNT_PHOTOS = 25;
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -35,35 +54,21 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const randomComments = getRandomInteger(0, 30);
+const getComment = (_, id) => ({
+  id,
+  avatar: `img/avatar-${getRandomInteger(avatarId.MIN, avatarId.MAX)}.svg`,
+  message: MESSAGES.slice(0, getRandomInteger(messagesCount.MIN, messagesCount.MAX)),
+  name: NAMES[getRandomInteger(0, NAMES.length - 1)],
+});
 
-const createDescriptionOfPhoto = (numOfComments) => {
-  const randomPhotoId = getRandomInteger(1, 25);
-  const randomUrl = getRandomInteger(1, 25);
-  const randomDescription = getRandomInteger(0, DESCRIPTION.length - 1);
-  const randomLikes = getRandomInteger(12, 200);
-  const comments = [];
+const getPhotoData = (_, id)=> ({
+  id,
+  url: `photos/${id}.jpg`,
+  description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
+  likes: getRandomInteger(likesCount.MIN, likesCount.MAX),
+  comments: Array.from({length: getRandomInteger(commentsCount.MIN, commentsCount.MAX)}, (getComment)),
+});
 
-  for (let i = 0; i<randomComments; i++) {
-    const randomIdForComment = getRandomInteger(1, 500);
-    const randomAvatar = getRandomInteger(1, 6);
-    const randomMessage = getRandomInteger(0, MESSAGES.length - 1);
-    const randomName = getRandomInteger(0, NAMES.length - 1);
-    comments.push( {
-      id: randomIdForComment,
-      avatar: 'img/avatar-' + randomAvatar + '.svg',
-      message: MESSAGES[randomMessage],
-      name: NAMES[randomName],
-    });
-  }
+const getPhotos = () => Array.from({length: MAX_COUNT_PHOTOS}, getPhotoData);
 
-  return {
-    id: randomPhotoId,
-    url: 'photos/' + randomUrl + '.jpg',
-    description: DESCRIPTION[randomDescription],
-    likes: randomLikes,
-    comments: comments,
-  };
-};
-
-const descriptionsOfPhotos = Array.from({length: PHOTOS_COUNT}, createDescriptionOfPhoto);
+getPhotos();
