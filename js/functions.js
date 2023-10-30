@@ -14,13 +14,13 @@ checkStringLength('кот', 4);
 isPalindrom('кот');
 */
 
-const isMeetingWithinWorkingDay = (startWorkingDay, endWorkingDay, startMeeting, duration) =>  {
-  const startWorkingDayMinutes = Number(startWorkingDay.split(':')[0]) * 60 + Number(startWorkingDay.split(':')[1]);
-  const endWorkingDayMinutes = Number(endWorkingDay.split(':')[0]) * 60 + Number(endWorkingDay.split(':')[1]);
-  const startMeetingMinutes = Number(startMeeting.split(':')[0]) * 60 + Number(startMeeting.split(':')[1]);
+const isMeetingWithinWorkingDay = (startOfWorkingDay, endOfWorkingDay, startOfMeeting, duration) =>  {
+  const startWorkingDayMinutes = Number(startOfWorkingDay.split(':')[0]) * 60 + Number(startOfWorkingDay.split(':')[1]);
+  const endWorkingDayMinutes = Number(endOfWorkingDay.split(':')[0]) * 60 + Number(endOfWorkingDay.split(':')[1]);
+  const startMeetingMinutes = Number(startOfMeeting.split(':')[0]) * 60 + Number(startOfMeeting.split(':')[1]);
   const endMeetingMinutes = startMeetingMinutes + duration;
 
   return startWorkingDayMinutes <= startMeetingMinutes && endMeetingMinutes <= endWorkingDayMinutes;
 };
 
-isMeetingWithinWorkingDay();
+isMeetingWithinWorkingDay('08:00', '17:30', '14:00', 90);
