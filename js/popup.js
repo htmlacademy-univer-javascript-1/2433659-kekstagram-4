@@ -1,4 +1,4 @@
-import { getPhotos } from "./data";
+import { getPhotos } from './data.js';
 
 const listElement = document.querySelector('.pictures');
 const pictureOfRandomUserTemplate = document.querySelector('#picture');
