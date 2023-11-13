@@ -1,5 +1,6 @@
 import {getPhotos} from './data.js';
-getPhotos();
-
 import { thumbnailsInit } from './thumbnails.js';
-thumbnailsInit(getPhotos());
+
+const photos = getPhotos();
+
+thumbnailsInit(photos);
