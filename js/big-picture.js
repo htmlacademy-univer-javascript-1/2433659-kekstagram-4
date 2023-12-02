@@ -2,11 +2,11 @@ const PART_OF_COMMENTS = 5;
 let commentsShown = 0;
 let comments = [];
 
-const bigPictureElement = document.querySelector('.big-picture');
+const bodyElement = document.querySelector('body');
+const bigPictureElement = bodyElement.querySelector('.big-picture');
 const commentShownCountElement = bigPictureElement.querySelector('.social__comment-count');
 const commentListElement = bigPictureElement.querySelector('.social__comments');
-const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
-const bodyElement = document.querySelector('body');
+const commentsLoaderElement = document.querySelector('.comments-loader');
 const cancelButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
 const commentElement = document.querySelector('.social__comment');
 
