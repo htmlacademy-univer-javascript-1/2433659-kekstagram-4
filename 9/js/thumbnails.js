@@ -1,3 +1,4 @@
+let photos = null;
 const picturesCollection = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -12,14 +13,13 @@ const createThumbnail = ( { url, description, likes, comments, id } ) => {
   return thumbnail;
 };
 
-const thumbnailsInit = (userPhotos) => {
-  const fragment = document.createDocumentFragment();
-  userPhotos.forEach((userPhoto) => {
-    const thumbnail =  createThumbnail(userPhoto);
-    fragment.appendChild(thumbnail);
-  });
-
-  picturesCollection.appendChild(fragment);
+const thumbnailsInit = (data) =>{
+  photos = data.slice();
+  if(photos){
+    photos.forEach((photo) => {
+      picturesCollection.appendChild(createThumbnail(photo));
+    });
+  }
 };
 
 export { thumbnailsInit };
