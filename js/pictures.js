@@ -1,25 +1,23 @@
+import { showBigPicture } from './big-picture.js';
+import { thumbnailsInit } from './thumbnail.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const createPictures = (({url, description, likes, comments, id}) => {
-  const pictureElement = pictureTemplate.cloneNode(true);
+const createPictures = (picutres) => {
+  pictureTemplate.addEventListener('click', (evt) => {
+    evt.preventDefault();
 
-  pictureElement.querySelector('.picture__img').src = url;
-  pictureElement.querySelector('.picture__img').alt = description;
-  pictureElement.querySelector('.picture__likes').textContent = likes;
-  pictureElement.querySelector('.picture__comments').textContent = comments.length;
-  pictureElement.dataset.pictureId = id;
+    const thumbnail = evt.target.closest('[data-thumbnail-id]');
 
-  return pictureElement;
-});
+    if(!thumbnail) {
 
-const renderPictures = (pictures, cont) => {
-  const pictureListFragment = document.createDocumentFragment();
-  pictures.forEach((item) => {
-    const thumbnail = createPictures(item);
-    pictureListFragment.append(thumbnail);
+      return;
+    }
+    const [picture] = picutres.filter((item) => item.id === +thumbnail.dataset.thumbnailId);
+    showBigPicture(picture);
   });
 
-  cont.append(pictureListFragment);
+  thumbnailsInit(picutres);
 };
 
-export {renderPictures};
+export { createPictures };
