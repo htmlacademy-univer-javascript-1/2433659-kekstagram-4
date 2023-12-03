@@ -1,4 +1,4 @@
-const PART_OF_COMMENTS = 5;
+const COMMENT_STEP = 5;
 let commentsShown = 0;
 let comments = [];
 
@@ -21,7 +21,7 @@ const createComment = ({avatar, name, message}) => {
 };
 
 const renderComments = () => {
-  commentsShown += PART_OF_COMMENTS;
+  commentsShown += COMMENT_STEP;
 
   if (commentsShown >= comments.length) {
     commentsLoaderElement.classList.add('hidden');
