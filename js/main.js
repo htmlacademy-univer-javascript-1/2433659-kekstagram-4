@@ -4,5 +4,5 @@ import {thumbnailsInit} from './thumbnails.js';
 
 const photos = getPhotos();
 
-showBigPicture(photos);
 thumbnailsInit(photos);
+showBigPicture(photos);
