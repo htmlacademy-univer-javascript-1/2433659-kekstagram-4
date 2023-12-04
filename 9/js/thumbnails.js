@@ -1,3 +1,5 @@
+import { showBigPicture } from './big-picture.js';
+
 let photos = null;
 const picturesCollection = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -13,11 +15,16 @@ const createThumbnail = ( { url, description, likes, comments, id } ) => {
   return thumbnail;
 };
 
-const thumbnailsInit = (data) =>{
+const thumbnailsInit = (data) => {
   photos = data.slice();
-  if(photos){
+  if(photos) {
     photos.forEach((photo) => {
-      picturesCollection.appendChild(createThumbnail(photo));
+      const thumbnail = createThumbnail(photo);
+      thumbnail.addEventListener('click', () => {
+        showBigPicture(photo);
+      });
+
+      picturesCollection.appendChild(thumbnail);
     });
   }
 };
