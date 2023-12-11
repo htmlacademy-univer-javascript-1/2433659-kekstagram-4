@@ -1,5 +1,5 @@
 import { showBigPicture } from './big-picture.js';
-import { InitThumbnails } from './thumbnails.js';
+import { initThumbnails } from './thumbnails.js';
 
 const container = document.querySelector('.pictures');
 const renderGallery = (picutres) => {
@@ -14,7 +14,7 @@ const renderGallery = (picutres) => {
     showBigPicture(picture);
   });
 
-  InitThumbnails(picutres);
+  initThumbnails(picutres);
 };
 
 export { renderGallery };
