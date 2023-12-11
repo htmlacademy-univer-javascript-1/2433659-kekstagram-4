@@ -4,11 +4,11 @@ const HASTAG_TEMPLATE = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const bodyElement = document.querySelector('body');
 const popup = bodyElement.querySelector('.img-upload__form');
-const overlayElement = bodyElement.querySelector('.img-upload__overlay');
-const inputUploadElement = bodyElement.querySelector('.img-upload__input ');
-const closeButton = bodyElement.querySelector('.img-upload__cancel');
-const hashtagsField = bodyElement.querySelector('.text__hashtags');
-const commentsField = bodyElement.querySelector('.text__description');
+const overlayElement = popup.querySelector('.img-upload__overlay');
+const inputUploadElement = popup.querySelector('.img-upload__input ');
+const closeButton = popup.querySelector('.img-upload__cancel');
+const hashtagsField = popup.querySelector('.text__hashtags');
+const commentsField = popup.querySelector('.text__description');
 
 const pristine = new Pristine (popup, {
   classTo: 'img-upload__field-wrapper',
@@ -29,20 +29,20 @@ const closePopup = () => {
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
+  inputUploadElement.value = '';
   hashtagsField.value = '';
   commentsField.value = '';
-  inputUploadElement.value = '';
   pristine.reset();
 };
 
-const extarctHastag = (value) => value.trim().split(' ').filter((element) => element.length > 0);
+const extractHastag = (value) => value.trim().split(' ').filter((element) => element.length > 0);
 
-const isValidHastag = (value) => extarctHastag(value).every((element) => HASTAG_TEMPLATE.test(element));
+const isValidHastag = (value) => extractHastag(value).every((element) => HASTAG_TEMPLATE.test(element));
 
-const isAmountHastag = (value) => extarctHastag(value).length <= COUNT_HASHTAGS;
+const isAmountHastag = (value) => extractHastag(value).length <= COUNT_HASHTAGS;
 
 const isUniqueHastag = (value) => {
-  const oneCaseHastags = extarctHastag(value).map((element) => element.toLowerCase());
+  const oneCaseHastags = extractHastag(value).map((element) => element.toLowerCase());
   return new Set(oneCaseHastags).size === oneCaseHastags.length;
 };
 
