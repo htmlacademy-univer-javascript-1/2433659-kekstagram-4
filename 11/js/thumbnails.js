@@ -12,7 +12,7 @@ const createThumbnail = ( { url, description, likes, comments, id } ) => {
   return thumbnail;
 };
 
-const InitThumbnails = (userPhotos) => {
+const initThumbnails = (userPhotos) => {
   const fragment = document.createDocumentFragment();
   userPhotos.forEach((userPhoto) => {
     const thumbnail =  createThumbnail(userPhoto);
@@ -22,4 +22,4 @@ const InitThumbnails = (userPhotos) => {
   picturesCollection.appendChild(fragment);
 };
 
-export { InitThumbnails };
+export { initThumbnails };
