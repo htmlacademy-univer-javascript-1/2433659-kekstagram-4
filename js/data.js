@@ -1,4 +1,37 @@
-import {getRandomInteger} from './util.js';
+import { getRandomNumber, createIdGenerator } from './utils.js';
+const descriptionId = createIdGenerator();
+const photoId = createIdGenerator();
+const commentId = createIdGenerator();
+const COUNT_PHOTOS = 25;
+
+const CommentsCount = {
+  MIN: 0,
+  MAX: 30
+};
+
+const LikesCount = {
+  MIN: 15,
+  MAX: 200
+};
+
+const AvatarId = {
+  MIN: 1,
+  MAX: 6
+};
+
+const MessagesCount = {
+  MIN: 1,
+  MAX: 2
+};
+
+const NAMES = [
+  'Катя',
+  'Саша',
+  'Андрей',
+  'Гена',
+  'Кирилл',
+  'Алёна',
+];
 
 const DESCRIPTIONS = [
   'Море',
@@ -17,52 +50,25 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const NAMES = [
-  'Катя',
-  'Саша',
-  'Андрей',
-  'Гена',
-  'Кирилл',
-  'Алёна',
-];
+const getTextForComment = () => Array.from(
+  { length: getRandomNumber (MessagesCount.MIN, MessagesCount.MAX) },
+  () => (MESSAGES[getRandomNumber(0, MESSAGES.length - 1)])).join(' ');
 
-const AvatarId = {
-  MIN: 1,
-  MAX: 6,
-};
-
-const MessagesCount = {
-  MIN: 1,
-  MAX: 2,
-};
-
-const CommentsCount = {
-  MIN: 0,
-  MAX: 30,
-};
-
-const LikesCount = {
-  MIN: 15,
-  MAX: 200,
-};
-
-const MAX_COUNT_PHOTOS = 25;
-
-const getComment = (_, id) => ({
-  id,
-  avatar: `img/avatar-${getRandomInteger(AvatarId.MIN, AvatarId.MAX)}.svg`,
-  message: MESSAGES.slice(0, getRandomInteger(MessagesCount.MIN, MessagesCount.MAX)),
-  name: NAMES[getRandomInteger(0, NAMES.length - 1)],
+const getComment = () => ({
+  id: commentId(),
+  avatar: `img/avatar-${getRandomNumber(AvatarId.MIN,AvatarId.MAX)}.svg`,
+  message: getTextForComment(),
+  name: NAMES[getRandomNumber(0, NAMES.length - 1)]
 });
 
-const getPhotoData = (_, id)=> ({
-  id,
-  url: `photos/${id}.jpg`,
-  description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
-  likes: getRandomInteger(LikesCount.MIN, LikesCount.MAX),
-  comments: Array.from({length: getRandomInteger(CommentsCount.MIN, CommentsCount.MAX)}, (getComment)),
+const getPhotoDescription = () => ({
+  id: descriptionId(),
+  url: `photos/${photoId()}.jpg`,
+  description: DESCRIPTIONS[getRandomNumber(0, DESCRIPTIONS.length - 1)],
+  likes: getRandomNumber(LikesCount.MIN, LikesCount.MAX),
+  comments: Array.from({length: getRandomNumber(CommentsCount.MIN, CommentsCount.MAX)}, getComment),
 });
 
-const getPhotos = () => Array.from({length: MAX_COUNT_PHOTOS}, getPhotoData);
+const getPhotos = () => Array.from({length:COUNT_PHOTOS}, getPhotoDescription);
 
-export {getPhotos};
+export { getPhotos };

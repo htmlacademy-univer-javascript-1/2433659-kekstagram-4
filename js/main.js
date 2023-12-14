@@ -1,8 +1,8 @@
-import {getPhotos} from './data.js';
-import { showBigPicture } from './big-picture.js';
-import {thumbnailsInit} from './thumbnails.js';
+import { getPhotos } from './data.js';
+import { renderGallery } from './gallery.js';
+import { openEditPopup } from './open-big-picture.js';
 
 const photos = getPhotos();
 
-thumbnailsInit(photos);
-showBigPicture(photos);
+renderGallery(photos);
+openEditPopup();

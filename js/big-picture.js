@@ -1,17 +1,19 @@
+import { isEscapeKey } from './utils.js';
 const COMMENT_STEP = 5;
 let commentsShown = 0;
-let comments = [];
+let comments = null;
 
 const bodyElement = document.querySelector('body');
 const bigPictureElement = bodyElement.querySelector('.big-picture');
-const commentShownCountElement = bigPictureElement.querySelector('.social__comment-count');
-const commentListElement = bigPictureElement.querySelector('.social__comments');
-const commentsLoaderElement = document.querySelector('.comments-loader');
-const cancelButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
-const commentElement = document.querySelector('.social__comment');
+const commentsList = bodyElement.querySelector('.social__comments');
+const commentListElement = bodyElement.querySelector('.social__comment');
+const cancelButtonElement = bodyElement.querySelector('.big-picture__cancel');
+const totalCommentsElement = bodyElement.querySelector('.comments-count');
+const commentsShownElement = bodyElement.querySelector('.comments-shown');
+const commentsLoaderElement = bodyElement.querySelector('.comments-loader');
 
-const createComment = ({avatar, name, message}) => {
-  const comment = commentElement.cloneNode(true);
+const createComment = ( {avatar, name, message} ) => {
+  const comment = commentListElement.cloneNode(true);
 
   comment.querySelector('.social__picture').src = avatar;
   comment.querySelector('.social__picture').alt = name;
@@ -21,29 +23,30 @@ const createComment = ({avatar, name, message}) => {
 };
 
 const renderComments = () => {
+  commentsList.innerHTML = '';
   commentsShown += COMMENT_STEP;
 
   if (commentsShown >= comments.length) {
-    commentsLoaderElement.classList.add('hidden');
     commentsShown = comments.length;
-  } else {
+    commentsLoaderElement.classList.add('hidden');
+  }
+  else {
     commentsLoaderElement.classList.remove('hidden');
   }
 
-  const fragment = document.createDocumentFragment();
-  for (let i=0; i<commentsShown; i++) {
+  for (let i = 0; i < commentsShown; i++) {
     const comment = createComment(comments[i]);
-    fragment.append(comment);
+    commentsList.appendChild(comment);
   }
-
-  commentListElement.innerHTML = '';
-  commentListElement.append(fragment);
-  commentShownCountElement.textContent = `${commentsShown} из ${comments.length} комментариев`;
+  commentsShownElement.textContent = commentsShown;
+  totalCommentsElement.textContent = comments.length;
 };
 
-const onCommentLoaderClick = () => renderComments();
+const onCommentLoaderClick = () => {
+  renderComments();
+};
 
-const hideBigPicture = () => {
+const closeBigPicture = () => {
   bigPictureElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -52,20 +55,20 @@ const hideBigPicture = () => {
   commentsShown = 0;
 };
 
-function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape') {
+function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
-    hideBigPicture();
+    closeBigPicture();
   }
 }
 
 function onCancelButtonClick () {
-  hideBigPicture();
+  closeBigPicture();
 }
 
-const renderPictureDetails = ({url, likes, description}) => {
-  bigPictureElement.querySelector('.big-picture__img img').src = url;
-  bigPictureElement.querySelector('.big-picture__img img').alt = description;
+const renderPictureDetails = ( { url, likes, description} ) => {
+  bigPictureElement.querySelector('.big-picture__img').querySelector('img').src = url;
+  bigPictureElement.querySelector('.big-picture__img').alt = description;
   bigPictureElement.querySelector('.likes-count').textContent = likes;
   bigPictureElement.querySelector('.social__caption').textContent = description;
 };
@@ -79,10 +82,8 @@ const showBigPicture = (data) => {
   commentsLoaderElement.addEventListener('click', onCommentLoaderClick);
 
   renderPictureDetails(data);
-  comments = data.comments;
-  if (comments.length > 0) {
-    renderComments();
-  }
+  comments = data.comments.slice();
+  renderComments(comments);
 };
 
-export {showBigPicture};
+export { showBigPicture };
