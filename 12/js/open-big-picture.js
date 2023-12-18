@@ -5,44 +5,22 @@ const ZOOM_STEP = 25;
 const MAX_SCALE = 100;
 const MIN_SCALE = 25;
 
-const chromeEffect = {
-  STYLE: 'grayscale',
-  MIN: 0,
-  MAX: 1,
-  STEP: 0.1,
-  UNITS: ''
+const Effect = {
+  none: {},
+  chrome: { style: 'grayscale', unit: '' },
+  sepia: { style: 'sepia', unit: '' },
+  marvin: { style: 'invert', unit: '%' },
+  fobos: { style: 'blur', unit: 'px' },
+  heat: { style: 'brightness', unit: '' },
 };
 
-const sepiaEffect = {
-  STYLE: 'sepia',
-  MIN: 0,
-  MAX: 1,
-  STEP: 0.1,
-  UNITS: ''
-};
-
-const marvinEffect = {
-  STYLE: 'invert',
-  MIN: 0,
-  MAX: 100,
-  STEP: 1,
-  UNITS: '%'
-};
-
-const fobosEffect = {
-  STYLE: 'blur',
-  MIN: 0,
-  MAX: 3,
-  STEP: 0.1,
-  UNITS: 'px'
-};
-
-const heatEffect = {
-  STYLE: 'brightness',
-  MIN: 1,
-  MAX: 3,
-  STEP: 0.1,
-  UNITS: ''
+const Scale = {
+  none: { min: 0, max: 100, step: 1 },
+  chrome: { min: 0, max: 1, step: 0.1 },
+  sepia: { min: 0, max: 1, step: 0.1 },
+  marvin: { min: 0, max: 100, step: 1 },
+  fobos: { min: 0, max: 3, step: 0.1 },
+  heat: { min: 1, max: 3, step: 0.1 },
 };
 
 const bodyElement = document.querySelector('body');
@@ -52,20 +30,6 @@ const inputUploadElement = popup.querySelector('.img-upload__input ');
 const closeButton = popup.querySelector('.img-upload__cancel');
 const hashtagsField = popup.querySelector('.text__hashtags');
 const commentsField = popup.querySelector('.text__description');
-
-// const sizeField = documentBody.querySelector('.scale__control--value');
-// const minusSizeButton = documentBody.querySelector('.scale__control--smaller');
-// const plusSizeButton = documentBody.querySelector('.scale__control--bigger');
-// const imageElement = documentBody.querySelector('.my-image-js');
-// const sliderElement = documentBody.querySelector('.effect-level__slider');
-// const effectValueField = documentBody.querySelector('.effect-level__value');
-// const sliderContainer = documentBody.querySelector('.img-upload__effect-level');
-// const effectNoneButton = documentBody.querySelector('#effect-none');
-// const effectChromeButton = documentBody.querySelector('#effect-chrome');
-// const effectSepiaButton = documentBody.querySelector('#effect-sepia');
-// const effectMarvinButton = documentBody.querySelector('#effect-marvin');
-// const effectPhobosButton = documentBody.querySelector('#effect-phobos');
-// const effectHeatButton = documentBody.querySelector('#effect-heat');
 
 const noneEffectButton = bodyElement.querySelector('#effect-none');
 const chromEffectButton = bodyElement.querySelector('#effect-chrome');
@@ -80,6 +44,7 @@ const imageElement = bodyElement.querySelector('.my-image-js');
 const sliderElement = bodyElement.querySelector('.effect-level__slider');
 const effectField = bodyElement.querySelector('.effect-level__value');
 const sliderContainer = bodyElement.querySelector('.img-upload__effect-level');
+
 
 const pristine = new Pristine (popup, {
   classTo: 'img-upload__field-wrapper',
@@ -180,7 +145,7 @@ function onMinusSizeButtonCLick (evt) {
   }
 }
 
-function onPlusSizeButtonClick (evt)  {
+function onPlusSizeButtonClick (evt) {
   evt.preventDefault();
   if(parseInt(sizeField.value, 10) < MAX_SCALE){
     const currentSize = parseInt(sizeField.value, 10);
@@ -198,9 +163,9 @@ function resetEffect () {
   sliderContainer.classList.add('hidden');
 }
 
-function showSlider () {
+const showSlider = () => {
   sliderContainer.classList.remove('hidden');
-}
+};
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -235,36 +200,36 @@ function onNoneEffectButtonChange (evt) {
 function onEffectChromeButtonChange (evt) {
   evt.preventDefault();
   showSlider();
-  updateSlider(chromeEffect.MIN, chromeEffect.MAX,
-    chromeEffect.STEP, chromeEffect.STYLE, chromeEffect.UNIT);
+  updateSlider(Scale.chrome.min, Scale.chrome.max,
+    Scale.chrome.step, Effect.chrome.style, Effect.chrome.unit);
 }
 
 function onSepiaEffectButtonChange (evt) {
   evt.preventDefault();
   showSlider();
-  updateSlider(sepiaEffect.MIN, sepiaEffect.MAX,
-    sepiaEffect.STEP, sepiaEffect.STYLE, sepiaEffect.UNIT);
+  updateSlider(Scale.sepia.min, Scale.sepia.max,
+    Scale.sepia.step, Effect.sepia.style, Effect.sepia.unit);
 }
 
 function onMarvinEffectButtonChange (evt) {
   evt.preventDefault();
   showSlider();
-  updateSlider(marvinEffect.MIN, marvinEffect.MAX,
-    marvinEffect.STEP, marvinEffect.STYLE, marvinEffect.UNIT);
+  updateSlider(Scale.marvin.min, Scale.marvin.max,
+    Scale.marvin.step, Effect.marvin.style, Effect.marvin.unit);
 }
 
 function onFobosEffectButtonChange (evt) {
   evt.preventDefault();
   showSlider();
-  updateSlider(fobosEffect.MIN, fobosEffect.MAX,
-    fobosEffect.STEP, fobosEffect.STYLE, fobosEffect.UNIT);
+  updateSlider(Scale.fobos.min, Scale.fobos.max,
+    Scale.fobos.step, Effect.fobos.style, Effect.fobos.unit);
 }
 
 function onHeatEffectButtonChange (evt) {
   evt.preventDefault();
   showSlider();
-  updateSlider(heatEffect.MIN, heatEffect.MAX,
-    heatEffect.STEP, heatEffect.STYLE, heatEffect.UNIT);
+  updateSlider(Scale.heat.min, Scale.heat.max,
+    Scale.heat.step, Effect.heat.style, Effect.heat.unit);
 }
 
 export { openEditPopup };
