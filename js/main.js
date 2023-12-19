@@ -1,8 +1,18 @@
-import { getPhotos } from './data.js';
 import { renderGallery } from './gallery.js';
-import { openEditPopup } from './open-big-picture.js';
+import { openEditPopup, setPopupSubmit, closePopup } from './open-big-picture.js';
+import { getData } from './api.js';
+import { showAlert } from './utils.js';
 
-const photos = getPhotos();
+getData()
+  .then((thumbnails) => {
+    renderGallery(thumbnails);
+  })
+  .catch(
+    (err) => {
+      showAlert(err.message);
+    }
+  );
 
-renderGallery(photos);
+setPopupSubmit(closePopup);
+
 openEditPopup();
