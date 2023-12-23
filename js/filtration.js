@@ -8,9 +8,9 @@ const Filter = {
   DISCUSSED: 'filter-discussed'
 };
 
-const documentBody = document.querySelector('body');
-const imageFiltres = documentBody.querySelector('.img-filters');
-const filtersButtons = documentBody.querySelectorAll('.img-filters__button ');
+const bodyElement = document.querySelector('body');
+const imageFiltres = bodyElement.querySelector('.img-filters');
+const filtersButtons = bodyElement.querySelectorAll('.img-filters__button ');
 
 let activeFilter = Filter.DEFAULT;
 let pictures = [];
@@ -21,7 +21,7 @@ const shufflePictures = (array) => array.sort(() => Math.random() - 0.5);
 const sortComments = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
 const overrideActiveElement = (clickElement) => {
-  const activeElement = documentBody.querySelector(`.${ACTIVE_FILTER_CLASS}`);
+  const activeElement = bodyElement.querySelector(`.${ACTIVE_FILTER_CLASS}`);
   activeElement.classList.remove(ACTIVE_FILTER_CLASS);
   clickElement.target.classList.add(ACTIVE_FILTER_CLASS);
 };
@@ -32,7 +32,7 @@ const filterFunction = {
   [Filter.DISCUSSED]: () => [...pictures].sort(sortComments)
 };
 
-const showFiltres = () => {
+const showImageFiltres = () => {
   imageFiltres.classList.remove(HIDDEN_CONTAINER_CLASS);
 };
 
@@ -51,7 +51,7 @@ const onFilterButtonClick = (evt) => {
 const initFilters = (data, cb) => {
   pictures = [...data];
   callback = cb;
-  showFiltres();
+  showImageFiltres();
   filtersButtons.forEach((filterButton) => filterButton.addEventListener('click', onFilterButtonClick));
   callback([...pictures]);
 };

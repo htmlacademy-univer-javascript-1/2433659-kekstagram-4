@@ -3,7 +3,7 @@ import { onDocumentKeydown as onDocumentKeydownEditPopup} from './open-big-pictu
 
 const bodyElement = document.querySelector('body');
 const messageSuccess = bodyElement.querySelector('#success').content.querySelector('.success');
-const errorMessage = bodyElement.querySelector('#error').content.querySelector('.error');
+const messageError = bodyElement.querySelector('#error').content.querySelector('.error');
 
 const closeMessage = () => {
   const messageElement = bodyElement.querySelector('.success') || bodyElement.querySelector('.error');
@@ -42,7 +42,7 @@ const showMessageSuccess = () => {
 };
 
 const showMessageError = () => {
-  showMessage(errorMessage, '.error__button');
+  showMessage(messageError, '.error__button');
 };
 
 export { showMessageSuccess, showMessageError };

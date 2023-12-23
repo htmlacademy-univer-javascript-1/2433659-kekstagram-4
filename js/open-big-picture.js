@@ -1,11 +1,11 @@
 import { isEscapeKey } from './utils.js';
-import { sendData } from './api.js';
 import { resetEffect, setupEffect, removeEffect } from './effects.js';
 import { resetScale, setupScale, removeScale } from './scale.js';
+import { sendData } from './api.js';
 import { showMessageSuccess, showMessageError } from './status-messages.js';
 
-const COUNT_HASHTAGS = 5;
-const HASTAG_TEMPLATE = /^#[a-zа-яё0-9]{1,19}$/i;
+const MAX_COUNT_HASHTAG = 5;
+const HASTAG_REGEX = /^#[a-zа-яё0-9]{1,19}$/i;
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Отправляю...'
@@ -13,12 +13,14 @@ const SubmitButtonText = {
 
 const bodyElement = document.querySelector('body');
 const popup = bodyElement.querySelector('.img-upload__form');
-const overlayElement = popup.querySelector('.img-upload__overlay');
-const inputUploadElement = popup.querySelector('.img-upload__input ');
+const editPopup = popup.querySelector('.img-upload__overlay');
 const closeButton = popup.querySelector('.img-upload__cancel');
+const inputUploadElement = popup.querySelector('.img-upload__input ');
 const hashtagsField = popup.querySelector('.text__hashtags');
 const commentsField = popup.querySelector('.text__description');
 const submitButton = bodyElement.querySelector('.img-upload__submit');
+const imageElement = bodyElement.querySelector('.my-image-js');
+const effectsPreviews = bodyElement.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine (popup, {
   classTo: 'img-upload__field-wrapper',
@@ -27,7 +29,7 @@ const pristine = new Pristine (popup, {
 });
 
 const openPopup = () => {
-  overlayElement.classList.remove('hidden');
+  editPopup.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
@@ -36,7 +38,7 @@ const openPopup = () => {
 };
 
 const closePopup = () => {
-  overlayElement.classList.add('hidden');
+  editPopup.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
@@ -48,21 +50,20 @@ const closePopup = () => {
   resetEffect();
 };
 
-const extractHastag = (value) => value.trim().split(' ').filter((element) => element.length > 0);
+const extarctHastag = (value) => value.trim().split(' ').filter((element) => element.length > 0);
 
-const isValidHastag = (value) => extractHastag(value).every((element) => HASTAG_TEMPLATE.test(element));
+const isValidHastag = (value) => extarctHastag(value).every((element) => HASTAG_REGEX.test(element));
 
-const isAmountHastag = (value) => extractHastag(value).length <= COUNT_HASHTAGS;
+const isAmountHastag = (value) => extarctHastag(value).length <= MAX_COUNT_HASHTAG;
 
 const isUniqueHastag = (value) => {
-  const oneCaseHastags = extractHastag(value).map((element) => element.toLowerCase());
+  const oneCaseHastags = extarctHastag(value).map((element) => element.toLowerCase());
   return new Set(oneCaseHastags).size === oneCaseHastags.length;
 };
 
-pristine.addValidator(hashtagsField, isAmountHastag, `Нельзя вводить более ${COUNT_HASHTAGS} хештегов :-(`);
+pristine.addValidator(hashtagsField, isAmountHastag, `Нельзя вводить более ${MAX_COUNT_HASHTAG} хештегов :-(`);
 pristine.addValidator(hashtagsField, isValidHastag, 'Хештег невалиден :-(');
 pristine.addValidator(hashtagsField, isUniqueHastag, 'Хештеги не должны повторяться :-(');
-
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && document.activeElement !== hashtagsField
@@ -74,9 +75,13 @@ function onDocumentKeydown (evt) {
 
 const onImageLoadingFieldChange = (evt) => {
   evt.preventDefault();
-  const selectedFiel = inputUploadElement.files[0];
-  if(selectedFiel.type.startsWith('image/') || /\.(jpg|jpeg|png|gif)$/i.test(selectedFiel.name)){
+  const selectedFile = inputUploadElement.files[0];
+  if(selectedFile.type.startsWith('image/') || /\.(jpg|jpeg|png|gif)$/i.test(selectedFile.name)){
     openPopup();
+    imageElement.src = URL.createObjectURL(selectedFile);
+    effectsPreviews.forEach((picture) => {
+      picture.style.backgroundImage = `url('${imageElement.src}')`;
+    });
   }
 };
 
@@ -99,7 +104,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
-const setPopupSubmit = (onSuccess) => {
+const setFormSubmit = (onSuccess) => {
   popup.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -117,4 +122,4 @@ const setPopupSubmit = (onSuccess) => {
   });
 };
 
-export { openEditPopup, setPopupSubmit, closePopup, onDocumentKeydown };
+export { openEditPopup, setFormSubmit, closePopup, onDocumentKeydown };
