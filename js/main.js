@@ -1,9 +1,8 @@
 import { renderGallery } from './gallery.js';
-import { openEditPopup, setPopupSubmit, closePopup } from './open-big-picture.js';
+import { openEditPopup, setFormSubmit, closePopup } from './open-big-picture.js';
 import { getData } from './api.js';
-import { showAlert } from './utils.js';
-import { initFilters } from './filtration-image.js';
-import { debounce } from './utils.js';
+import { showAlert, debounce } from './utils.js';
+import { initFilters } from './filtration.js';
 
 getData()
   .then((thumbnails) => {
@@ -17,6 +16,7 @@ getData()
     }
   );
 
-setPopupSubmit(closePopup);
+
+setFormSubmit(closePopup);
 
 openEditPopup();

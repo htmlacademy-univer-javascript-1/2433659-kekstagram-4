@@ -1,6 +1,6 @@
 const ZOOM_STEP = 25;
-const MAX_SCALE = 100;
-const MIN_SCALE = 25;
+const MAXIMUM_SCALE = 100;
+const MINIMUM_SCALE = 25;
 
 const bodyElement = document.querySelector('body');
 const sizeField = bodyElement.querySelector('.scale__control--value');
@@ -15,7 +15,7 @@ const scaleImage = (value) => {
 
 const onMinusSizeButtonCLick = (evt) => {
   evt.preventDefault();
-  if(parseInt(sizeField.value, 10) > MIN_SCALE){
+  if(parseInt(sizeField.value, 10) > MINIMUM_SCALE){
     const currentSize = parseInt(sizeField.value, 10);
     const newSize = currentSize - ZOOM_STEP;
     scaleImage(newSize);
@@ -24,7 +24,7 @@ const onMinusSizeButtonCLick = (evt) => {
 
 const onPlusSizeButtonClick = (evt) => {
   evt.preventDefault();
-  if(parseInt(sizeField.value, 10) < MAX_SCALE){
+  if(parseInt(sizeField.value, 10) < MAXIMUM_SCALE){
     const currentSize = parseInt(sizeField.value, 10);
     const newSize = currentSize + ZOOM_STEP;
     scaleImage(newSize);
@@ -32,7 +32,7 @@ const onPlusSizeButtonClick = (evt) => {
 };
 
 const resetScale = () => {
-  scaleImage(MAX_SCALE);
+  scaleImage(MAXIMUM_SCALE);
 };
 
 const setupScale = () => {
